@@ -5,6 +5,7 @@
       拖拽到上方之后，标签可以被删除。<br />
       无法将已拖拽到上方的标签再次进行拖拽。<br />
       如果某个标签已在上方，则无法从下方再次进行拖拽<br />
+      相关技术：<a href="https://github.com/bevacqua/dragula" target="blank">bevacqua/dragula</a>
     </div>
 
     <div id="to" class="drag-box">

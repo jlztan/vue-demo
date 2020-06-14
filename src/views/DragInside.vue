@@ -1,6 +1,8 @@
 <template>
   <div>
-    在一个 div 内部拖拽元素，内部元素不会超出外部 div 的范围
+    在一个 div 内部拖拽元素，内部元素不会超出外部 div 的范围<br />
+    相关技术：HTML5 原生
+    <a target="_blank" href="https://developer.mozilla.org/zh-CN/docs/Web/API/HTML_Drag_and_Drop_API">拖放 API</a>
     <div class="wrapper" @dragover="dragover_handler($event)">
       <img
         id="src_img"
@@ -97,14 +99,6 @@ export default {
       e.preventDefault();
       return true;
     }
-
-    // window.onresize = () => {
-    //   wrapper_left = wrapper.getBoundingClientRect().left;
-    //   wrapper_top = wrapper.getBoundingClientRect().top;
-    //   wrapper_right = wrapper.getBoundingClientRect().right;
-    //   wrapper_bottom = wrapper.getBoundingClientRect().bottom;
-    // };
-    // }
   }
 };
 </script>
