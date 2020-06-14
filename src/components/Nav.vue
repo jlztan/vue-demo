@@ -4,6 +4,7 @@
     <div><router-link to="/dragInside">在 div 内部拖拽</router-link></div>
     <div><router-link to="/dragToTarget">普通拖拽</router-link></div>
     <div><router-link to="/viewPDF">PDF.js</router-link></div>
+    <div><router-link to="/sheet">spreadsheet demo</router-link></div>
   </div>
 </template>
 

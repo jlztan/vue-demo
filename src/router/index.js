@@ -24,6 +24,11 @@ const routes = [
     path: '/viewPDF',
     name: 'PDFJsDemo',
     component: () => import('../views/PDFJsDemo.vue')
+  },
+  {
+    path: '/sheet',
+    name: 'Sheet',
+    component: () => import('../views/Sheet.vue')
   }
 ];
 
