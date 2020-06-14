@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div>
+      将下方 div 中的标签拖拽到上方 div。<br />
+      拖拽到上方之后，标签可以被删除。<br />
+      无法将已拖拽到上方的标签再次进行拖拽。<br />
+      如果某个标签已在上方，则无法从下方再次进行拖拽<br />
+    </div>
+
     <div id="to" class="drag-box">
       <Tag closable @on-close="tagClose($event)" v-for="tag in tags" :key="tag">{{ tag }}</Tag>
     </div>
@@ -14,17 +21,17 @@
 
 <script>
 export default {
-  name: 'DragDemo',
+  name: 'DragToTarget',
   data() {
     return {
       tags: []
     };
   },
   mounted() {
-    this.leftClick();
+    this.dragHandler();
   },
   methods: {
-    leftClick() {
+    dragHandler() {
       this.dragula([document.getElementById('from'), document.getElementById('to')], {
         copy: (el, source) => {
           return source === document.getElementById('from');
@@ -86,6 +93,7 @@ export default {
   display: inline-block;
   border-radius: 3px;
   background-color: red;
+  text-align: center;
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab;

@@ -11,14 +11,14 @@ const routes = [
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/About.vue')
+    path: '/dragInside',
+    name: 'DragInside',
+    component: () => import('../views/DragInside.vue')
   },
   {
-    path: '/dragDemo',
-    name: 'DragDemo',
-    component: () => import('../views/DragDemo.vue')
+    path: '/dragToTarget',
+    name: 'DragToTarget',
+    component: () => import('../views/DragToTarget.vue')
   }
 ];
 
