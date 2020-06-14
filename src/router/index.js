@@ -19,6 +19,11 @@ const routes = [
     path: '/dragToTarget',
     name: 'DragToTarget',
     component: () => import('../views/DragToTarget.vue')
+  },
+  {
+    path: '/viewPDF',
+    name: 'PDFJsDemo',
+    component: () => import('../views/PDFJsDemo.vue')
   }
 ];
 
