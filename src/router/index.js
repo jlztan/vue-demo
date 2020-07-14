@@ -31,9 +31,9 @@ const routes = [
     component: () => import('../views/Sheet.vue')
   },
   {
-    path: '/canvastopng',
-    name: 'CanvasToPng',
-    component: () => import('../views/CanvasToPng.vue')
+    path: '/canvastoimage',
+    name: 'CanvasToImage',
+    component: () => import('../views/CanvasToImage.vue')
   }
 ];
 
