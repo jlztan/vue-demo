@@ -5,6 +5,7 @@
     <div><router-link to="/dragToTarget">普通拖拽</router-link></div>
     <div><router-link to="/viewPDF">PDF.js</router-link></div>
     <div><router-link to="/sheet">spreadsheet demo</router-link></div>
+    <div><router-link to="/canvastopng">CanvasToPng</router-link></div>
   </div>
 </template>
 
