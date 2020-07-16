@@ -1,8 +1,8 @@
 /**
  * 格式化当前时间
  */
-function showtime() {
-  let addzero = function(num) {
+function getCurTimestamp() {
+  let addzero = num => {
     return num < 10 ? '0' + num : num.toString();
   };
 
@@ -18,4 +18,4 @@ function showtime() {
   return currentTime;
 }
 
-export { showtime };
+export { getCurTimestamp };

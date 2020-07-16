@@ -12,7 +12,7 @@
 <script>
 import echarts from 'echarts';
 import h2c from 'html2canvas';
-import showtime from '../assets/js/utils';
+import { getCurTimestamp } from '../assets/js/utils';
 export default {
   name: 'CanvasToImage',
   mounted() {
@@ -80,7 +80,7 @@ export default {
         // 定义一个 a 标签用来触发图片的下载
         let triggerDownload = document.createElement('a');
         triggerDownload.setAttribute('href', canvas.toDataURL('image/jpeg', 1.0));
-        triggerDownload.setAttribute('download', showtime() + '-export.jpeg');
+        triggerDownload.setAttribute('download', getCurTimestamp() + '-export.jpeg');
         document.body.appendChild(triggerDownload);
         triggerDownload.click();
         document.body.removeChild(triggerDownload);
