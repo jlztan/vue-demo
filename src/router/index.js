@@ -34,6 +34,11 @@ const routes = [
     path: '/canvastoimage',
     name: 'CanvasToImage',
     component: () => import('../views/CanvasToImage.vue')
+  },
+  {
+    path: '/echartstosvg',
+    name: 'EchartsToSVG',
+    component: () => import('../views/EchartsToSVG.vue')
   }
 ];
 
