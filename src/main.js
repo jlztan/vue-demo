@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import dragula from 'dragula';
+import axios from 'axios';
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
 import ElementUI from 'element-ui';
@@ -13,6 +14,7 @@ Vue.use(dragula);
 Vue.use(ViewUI);
 Vue.use(ElementUI);
 
+Vue.prototype.$http = axios;
 Vue.prototype.dragula = dragula;
 
 new Vue({
