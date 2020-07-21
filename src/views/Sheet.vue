@@ -5,6 +5,17 @@
       <div class="left">
         <div class="tool-bar">
           <button @click="numFixed">取位</button>
+          <el-input-number v-model="accuracy" controls-position="right" :min="1" :max="10" size="small">
+          </el-input-number>
+          <el-input
+            placeholder="请输入内容"
+            prefix-icon="el-icon-search"
+            @keyup.enter.native="search"
+            v-model="target"
+            style="width:250px"
+          >
+          </el-input>
+          <button @click="search">查找</button>
         </div>
         <div class="sheet-wrapper"></div>
       </div>
@@ -25,16 +36,18 @@ export default {
       instance: undefined, // 表格实例
       sheetWrapper: undefined, // 表格父元素
       curSelect: {}, //当前选中的单元格
-      colLen: 0 // 原始数据中列数的最大值
+      colLen: 0, // 原始数据中列数的最大值
+      accuracy: 10, // 取位的精度
+      target: '' // 搜索内容
     };
   },
   mounted() {
     // 浏览器窗口改变时，对表格进行自适应
     window.onresize = () => {
       console.log('resizing...');
+      console.log(this.instance.getData());
       if (this.$route.name === 'Sheet') {
         console.log('yes, sheet');
-        this.sheetWrapper.innerHTML = '';
         this.initSheet(this.instance.getData());
       }
     };
@@ -44,42 +57,109 @@ export default {
   },
   methods: {
     /**
+     * 查找
+     */
+    search() {
+      /* 查找 开始 */
+      console.log('search...');
+      console.log('>>>' + this.target + '<<<');
+      console.log('handled:' + this.target.trim() + '<<<');
+      if (this.target.trim().length === 0) {
+        console.warn('input empty string...');
+        return;
+      }
+      let target = this.target;
+      let res = [];
+      let data = this.instance.getData();
+      console.log(data[0]);
+      let ri = data[0].rows.len;
+      let ci = data[0].cols.len;
+      for (let i = 0; i < ri; i++) {
+        for (let j = 0; j < ci; j++) {
+          console.log(i, j);
+          let cell = data[0].rows[i].cells[j];
+          console.log(cell);
+          if (cell === null || cell === undefined) {
+            continue;
+          }
+          cell.style = 0;
+          let tmp = this.instance.cell(i, j);
+          if (tmp === null) {
+            continue;
+          }
+          if (tmp.text.indexOf(target) > -1) {
+            res.push({ i, j });
+          }
+        }
+      }
+      console.log(res);
+      /* 查找 结束 */
+
+      /* 数据处理 开始 */
+      data[0].styles.push({ bgcolor: 'yellow' });
+      res.forEach(item => {
+        data[0].rows[item.i].cells[item.j].style = 1;
+      });
+      this.initSheet(data);
+      // res.forEach(item => {});
+      /* 数据处理 结束 */
+    },
+
+    /**
      * 取位
      *
      * 支持单个单元格取位；拖动选择取位；按行取位；按列取位；
      * 待支持：一键全选取位：按住 ctrl 选择多个区域取位
      */
     numFixed() {
+      console.log('accuart:' + this.accuracy);
+      let context = this;
       console.log('fixed:', this.curSelect);
-      console.log(this.instance.getData());
       // 页面加载之后，默认选中第一个单元格，此时点击“取位”会对第一个单元格进行操作
       if (Object.keys(this.curSelect).length === 0) {
-        let num = Number(this.instance.cell(0, 0).text);
-        if (Number.isNaN(num)) {
-          return;
-        }
-        this.instance.cellText(0, 0, parseFloat(num).toFixed(3)).reRender();
+        cellFixedHandler(0, 0, 0, 0);
         return;
       }
 
       if (this.curSelect.mode === 'single') {
-        let num = Number(this.instance.cell(this.curSelect.ri, this.curSelect.ci).text);
-        if (Number.isNaN(num)) {
-          return;
+        // 选择整列
+        if (this.curSelect.ri < 0) {
+          let sri = 0;
+          let sci = this.curSelect.ci; // eci
+          let eri = this.instance.getData()[0].rows.len - 1;
+          cellFixedHandler(sri, sci, eri, sci);
+        } else if (this.curSelect.ci < 0) {
+          // 选择整行
+          let sri = this.curSelect.ri; // eri
+          let sci = 0;
+          let eci = this.instance.getData()[0].cols.len - 1;
+          cellFixedHandler(sri, sci, sri, eci);
+        } else {
+          cellFixedHandler(this.curSelect.ri, this.curSelect.ci, this.curSelect.ri, this.curSelect.ci);
         }
-        this.instance.cellText(this.curSelect.ri, this.curSelect.ci, parseFloat(num).toFixed(3)).reRender();
       } else if (this.curSelect.mode === 'drag') {
-        for (let ri = this.curSelect.sri; ri <= this.curSelect.eri; ri++) {
-          for (let ci = this.curSelect.sci; ci <= this.curSelect.eci; ci++) {
-            // console.log(this.instance.cell(ri, ci));
-            if (this.instance.cell(ri, ci) === null) {
+        cellFixedHandler(this.curSelect.sri, this.curSelect.sci, this.curSelect.eri, this.curSelect.eci);
+      }
+
+      /**
+       *遍历单元格进行取位
+       *
+       * @param sri 取位区域左上角行坐标
+       * @param sci 取位区域左上角列坐标
+       * @param eri 取位区域右下角行坐标
+       * @param eci 取位区域右下角列坐标
+       */
+      function cellFixedHandler(sri, sci, eri, eci) {
+        for (let ri = sri; ri <= eri; ri++) {
+          for (let ci = sci; ci <= eci; ci++) {
+            if (context.instance.cell(ri, ci) === null) {
               continue;
             }
-            let num = Number(this.instance.cell(ri, ci).text);
+            let num = Number(context.instance.cell(ri, ci).text);
             if (Number.isNaN(num)) {
               continue;
             }
-            this.instance.cellText(ri, ci, parseFloat(num).toFixed(3)).reRender();
+            context.instance.cellText(ri, ci, parseFloat(num).toFixed(context.accuracy)).reRender();
           }
         }
       }
@@ -97,12 +177,24 @@ export default {
       // 数据值要转换成字符串，否则某些操作会报错
       sampleData.map((item, index) => {
         this.colLen = Math.max(this.colLen, Object.keys(item).length);
-        rows[index] = { cells: { 0: { text: item.date + '' }, 1: { text: item.value + '' } } };
+        rows[index] = {
+          cells: {
+            0: { text: item.date + '' },
+            1: { text: item.value + '' },
+            2: { text: item.l + '' },
+            3: { text: item.u + '' }
+          }
+        };
       });
 
       let data = [
         {
           name: 'sheet1',
+          styles: [
+            {
+              bgcolor: 'red'
+            }
+          ],
           rows
         }
       ];
@@ -115,6 +207,8 @@ export default {
      * @param data 表格数据
      */
     initSheet(data) {
+      console.log('initsheet...');
+      this.sheetWrapper.innerHTML = '';
       let wrapper_size = this.getWrapperSize();
       this.instance = new xspreadsheet(this.sheetWrapper, {
         showToolbar: false,
@@ -156,6 +250,7 @@ export default {
         });
 
       // 去掉 bottombar 和打印页面
+      // toFix:需要修改源码，不渲染 bottombar
       let sheetEle = document.querySelector('.x-spreadsheet');
       sheetEle.removeChild(document.querySelector('.x-spreadsheet-bottombar'));
       sheetEle.removeChild(document.querySelector('.x-spreadsheet-print'));
