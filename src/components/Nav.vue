@@ -7,6 +7,7 @@
     <div><router-link to="/sheet">spreadsheet demo</router-link></div>
     <div><router-link to="/canvastoimage">Canvas2Image</router-link></div>
     <div><router-link to="/echartstosvg">Echarts2SVG</router-link></div>
+    <div><router-link to="/echartsimportjson">EchartsImportJson</router-link></div>
   </div>
 </template>
 

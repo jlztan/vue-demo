@@ -39,6 +39,11 @@ const routes = [
     path: '/echartstosvg',
     name: 'EchartsToSVG',
     component: () => import('../views/EchartsToSVG.vue')
+  },
+  {
+    path: '/echartsimportjson',
+    name: 'EchartsImportJson',
+    component: () => import('../views/EchartsImportJson.vue')
   }
 ];
 
