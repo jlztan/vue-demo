@@ -15,7 +15,7 @@
             style="width:250px"
           >
           </el-input>
-          <button @click="search">查找</button>
+          <div class="curpos">{{ curPos }}</div>
         </div>
         <div class="sheet-wrapper"></div>
       </div>
@@ -36,6 +36,7 @@ export default {
       instance: undefined, // 表格实例
       sheetWrapper: undefined, // 表格父元素
       curSelect: {}, //当前选中的单元格
+      curPos: 'A1', // 当前选中的表格坐标
       colLen: 0, // 原始数据中列数的最大值
       accuracy: 10, // 取位的精度
       target: '' // 搜索内容
@@ -57,31 +58,30 @@ export default {
   },
   methods: {
     /**
-     * 查找
+     * 查找并高亮
      */
     search() {
       /* 查找 开始 */
       console.log('search...');
-      console.log('>>>' + this.target + '<<<');
-      console.log('handled:' + this.target.trim() + '<<<');
       if (this.target.trim().length === 0) {
-        console.warn('input empty string...');
         return;
       }
+
       let target = this.target;
       let res = [];
       let data = this.instance.getData();
-      console.log(data[0]);
-      let ri = data[0].rows.len;
       let ci = data[0].cols.len;
-      for (let i = 0; i < ri; i++) {
+      // 为提高效率，只取有数据的行
+      let nonEmptyRows = Object.keys(data[0].rows);
+      // rows 的最后一个属性为 len，去掉
+      nonEmptyRows.pop();
+      nonEmptyRows.forEach(i => {
         for (let j = 0; j < ci; j++) {
-          console.log(i, j);
           let cell = data[0].rows[i].cells[j];
-          console.log(cell);
           if (cell === null || cell === undefined) {
             continue;
           }
+          // 重置样式
           cell.style = 0;
           let tmp = this.instance.cell(i, j);
           if (tmp === null) {
@@ -91,17 +91,15 @@ export default {
             res.push({ i, j });
           }
         }
-      }
-      console.log(res);
+      });
       /* 查找 结束 */
-
+      this.$message({ duration: 1000, message: '共查询到' + res.length + '个内容' });
       /* 数据处理 开始 */
       data[0].styles.push({ bgcolor: 'yellow' });
       res.forEach(item => {
         data[0].rows[item.i].cells[item.j].style = 1;
       });
       this.initSheet(data);
-      // res.forEach(item => {});
       /* 数据处理 结束 */
     },
 
@@ -192,7 +190,7 @@ export default {
           name: 'sheet1',
           styles: [
             {
-              bgcolor: 'red'
+              bgcolor: '#ffffff'
             }
           ],
           rows
@@ -239,6 +237,42 @@ export default {
           this.curSelect.mode = 'single';
           this.curSelect.ri = ri;
           this.curSelect.ci = ci;
+
+          let alphabet = [
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z'
+          ];
+          if (ci < 0) {
+            this.curPos = 'Line' + (ri + 1);
+          } else if (ri < 0) {
+            this.curPos = 'Column' + alphabet[ci];
+          } else {
+            this.curPos = '' + alphabet[ci] + (ri + 1);
+          }
         })
         .on('cells-selected', (cell, { sri, sci, eri, eci }) => {
           console.log('cells...');
@@ -288,8 +322,14 @@ export default {
 }
 
 .pb-sheet-container .left .tool-bar {
-  height: 50px;
+  height: 70px;
   background-color: chocolate;
+}
+.pb-sheet-container .left .tool-bar .curpos {
+  width: 70px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 3px;
 }
 
 .pb-sheet-container .left .sheet-wrapper {
