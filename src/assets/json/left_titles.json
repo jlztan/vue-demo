@@ -1,0 +1,7 @@
+{
+  "item1": { "title": "img1", "url": "../assets/img/img1.jpg" },
+  "item2": { "title": "img2", "url": "../assets/img/img2.jpg" },
+  "item3": { "title": "img3", "url": "../assets/img/img3.jpg" },
+  "item4": { "title": "img4", "url": "../assets/img/img4.jpg" },
+  "item5": { "title": "img5", "url": "../assets/img/img5.jpg" }
+}
