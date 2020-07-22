@@ -4,7 +4,7 @@
     <!-- <div id="main" style="width: 600px; height: 400px;"></div> -->
     <div class="container">
       <div class="left">
-        <div v-for="item in leftTitles" :key="item.title" class="item" tabindex="0" @click="viewChart(item.title)">
+        <div v-for="item in leftTitles" :key="item.title" class="item" @click="viewChart($event, item.title)">
           {{ item.title }}
         </div>
       </div>
@@ -33,7 +33,13 @@ export default {
      *
      * @param title 图表名称
      */
-    viewChart(title) {
+    viewChart(event, title) {
+      let activeEle = document.querySelector('.active');
+      if (activeEle !== null) {
+        activeEle.classList.remove('active');
+      }
+      event.target.classList.add('active');
+
       import('../assets/js/' + title)
         .then(module => {
           console.log(module.option);
@@ -66,7 +72,6 @@ export default {
   margin: 0 auto;
 }
 .container .left .item {
-  box-sizing: border-box;
   background-color: white;
   flex: 0 1 25%;
   height: 50px;
@@ -78,7 +83,7 @@ export default {
   cursor: pointer;
 }
 
-.container .left .item:focus {
+.container .left .active {
   border: 2px solid yellow;
 }
 
