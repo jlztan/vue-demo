@@ -18,8 +18,6 @@ export default {
     viewByBus.$on('option', param => {
       console.log('show view, on option...');
       if (param.type === 'chart') {
-        console.log('aaaa');
-        console.log(param.data);
         document.querySelector('.chart').style.display = 'block';
         document.querySelector('.view-tip').style.display = 'none';
         myChart.clear();

@@ -34,7 +34,6 @@ export default {
      * @param title 图表名称
      */
     viewChart(title) {
-      console.log(title);
       import('../assets/js/' + title)
         .then(module => {
           console.log(module.option);
