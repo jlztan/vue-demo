@@ -44,6 +44,11 @@ const routes = [
     path: '/echartsimportjson',
     name: 'EchartsImportJson',
     component: () => import('../views/EchartsImportJson.vue')
+  },
+  {
+    path: '/css3basedstyleandlinkage',
+    name: 'CSS3BasedStyleAndLinkage',
+    component: () => import('../views/CSS3BasedStyleAndLinkage.vue')
   }
 ];
 
