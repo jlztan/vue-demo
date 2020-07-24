@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>Echarts 从 JSON 文件加载 Option</div>
+    <div>预览 Echarts</div>
     <!-- <div id="main" style="width: 600px; height: 400px;"></div> -->
     <div class="container">
       <div class="left">
@@ -20,7 +20,7 @@ import leftTitlesJson from '../assets/json/left_titles.json';
 import ShowView from '../components/ShowView';
 import { viewByBus } from '../assets/js/theBus';
 export default {
-  name: 'EchartsImportJson',
+  name: 'ViewEcharts',
   data() {
     return {
       leftTitles: leftTitlesJson

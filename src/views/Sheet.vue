@@ -238,6 +238,7 @@ export default {
           this.curSelect.ri = ri;
           this.curSelect.ci = ci;
 
+          // toFix：潜在 bug：最多 26 列，如果存在更多列需要进一步扩展
           let alphabet = [
             'A',
             'B',
@@ -291,7 +292,7 @@ export default {
     },
 
     /**
-     *获取表格 dom 的父元素，在浏览器窗口大小改变时进行表格的自适应
+     *获取表格的父元素，在浏览器窗口大小改变时进行表格的自适应
      */
     getWrapperSize() {
       let computedStyle = window.getComputedStyle(this.sheetWrapper, null);
