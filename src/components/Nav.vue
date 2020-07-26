@@ -9,6 +9,7 @@
     <div><router-link to="/echartstosvg">Echarts2SVG</router-link></div>
     <div><router-link to="/viewecharts">ViewEcharts</router-link></div>
     <div><router-link to="/css3basedstyleandlinkage">CSS3BasedStyleAndLinkage</router-link></div>
+    <div><router-link to="/svgpath">SVG Path</router-link></div>
   </div>
 </template>
 

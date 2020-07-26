@@ -49,6 +49,11 @@ const routes = [
     path: '/css3basedstyleandlinkage',
     name: 'CSS3BasedStyleAndLinkage',
     component: () => import('../views/CSS3BasedStyleAndLinkage.vue')
+  },
+  {
+    path: '/svgpath',
+    name: 'SVGPath',
+    component: () => import('../views/SVGPath.vue')
   }
 ];
 
